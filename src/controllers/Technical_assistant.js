@@ -1,11 +1,11 @@
 const OpenAI = require('openai');
 
 
-const {openai_org, openai_api_key, id_assistant_ta} = require('../utils/config/index')
+const {openai_org, openai_api_key, id_assistant} = require('../utils/config/index')
 
 const apiKey= openai_api_key
 const organization= openai_org
-const assistant_id= id_assistant_ta
+const assistant_id= id_assistant
 
 
 //Inicia openai
@@ -18,7 +18,6 @@ const Technical_assistant = async (req, res) => {
     try {
         const query = req.body.query;
         const existingThreadId = req.body.thread_id; // Verifica si `thread_id` existe en el body
-        console.log('Consulta del usuario:', query);
 
         let thread_id;
 
@@ -31,7 +30,7 @@ const Technical_assistant = async (req, res) => {
             thread_id = thread.id;
         }
 
-        // Modificar el mensaje para aclarar el alcance de la búsqueda
+        // Modifico el mensaje para aclarar el alcance de la búsqueda
         const messageText = `Responde utilizando los documentos que tienes en tu base de conocimiento. Pregunta del usuario: ${query}`;
 
         const message = await openai.beta.threads.messages.create(thread_id, {
@@ -54,8 +53,10 @@ const Technical_assistant = async (req, res) => {
 
             if (runs.status === "completed") {
                 const messages = await openai.beta.threads.messages.list(thread_id);
-                const response = messages.data[0].content[0].text.value;
+                const pre_response = messages.data[0].content[0].text.value;
+                const response = cleanResponse(pre_response);
 
+                console.log("Respuesta: ", response);
                 if (response) {
                     res.status(200).send({ response, thread_id});
                 } else {
@@ -84,6 +85,10 @@ const Technical_assistant = async (req, res) => {
     }
 };
 
+function cleanResponse(text) {
+    // Remover referencias como   y otros c deseados
+    return text.replace(/【\d+:\d+†source】/g, '').trim();
+}
 module.exports = {
     Technical_assistant 
 };
