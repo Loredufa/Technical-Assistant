@@ -32,7 +32,7 @@ const Technical_assistant = async (req, res) => {
         }
 
         // Modificar el mensaje para aclarar el alcance de la búsqueda
-        const messageText = `Responde utilizando el documento FortiOS-7.6.0-Administration_Guide. Pregunta del usuario: ${query}`;
+        const messageText = `Responde utilizando los documentos que tienes en tu base de conocimiento. Pregunta del usuario: ${query}`;
 
         const message = await openai.beta.threads.messages.create(thread_id, {
             role: "user",
