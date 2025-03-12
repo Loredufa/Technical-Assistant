@@ -1,0 +1,170 @@
+﻿kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/route-disabled: 'false'
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/Loredufa/Technical-Assistant.git'
+    deployment.kubernetes.io/revision: '2'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"technical-assistant-git:latest","namespace":"technical-assistant"},"fieldPath":"spec.template.spec.containers[?(@.name==\"technical-assistant-git\")].image","paused":"false"}]'
+    openshift.io/generated-by: OpenShiftWebConsole
+  resourceVersion: '60916855'
+  name: technical-assistant-git
+  uid: 4854b832-bd5d-4d78-b66b-7b57fa909ab2
+  creationTimestamp: '2025-01-22T13:36:27Z'
+  generation: 3
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: apps/v1
+      time: '2025-01-22T13:36:45Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:alpha.image.policy.openshift.io/resolve-names': {}
+            'f:app.openshift.io/route-disabled': {}
+            'f:app.openshift.io/vcs-ref': {}
+            'f:app.openshift.io/vcs-uri': {}
+            'f:image.openshift.io/triggers': {}
+            'f:openshift.io/generated-by': {}
+          'f:labels':
+            .: {}
+            'f:app': {}
+            'f:app.kubernetes.io/component': {}
+            'f:app.kubernetes.io/instance': {}
+            'f:app.kubernetes.io/name': {}
+            'f:app.kubernetes.io/part-of': {}
+            'f:app.openshift.io/runtime': {}
+            'f:app.openshift.io/runtime-version': {}
+        'f:spec':
+          'f:progressDeadlineSeconds': {}
+          'f:revisionHistoryLimit': {}
+          'f:selector': {}
+          'f:strategy':
+            'f:rollingUpdate':
+              .: {}
+              'f:maxSurge': {}
+              'f:maxUnavailable': {}
+            'f:type': {}
+          'f:template':
+            'f:metadata':
+              'f:labels':
+                .: {}
+                'f:app': {}
+                'f:deployment': {}
+            'f:spec':
+              'f:containers':
+                'k:{"name":"technical-assistant-git"}':
+                  'f:envFrom': {}
+                  'f:image': {}
+                  'f:terminationMessagePolicy': {}
+                  .: {}
+                  'f:resources': {}
+                  'f:terminationMessagePath': {}
+                  'f:imagePullPolicy': {}
+                  'f:ports':
+                    .: {}
+                    'k:{"containerPort":8080,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:protocol': {}
+                  'f:name': {}
+              'f:dnsPolicy': {}
+              'f:restartPolicy': {}
+              'f:schedulerName': {}
+              'f:securityContext': {}
+              'f:terminationGracePeriodSeconds': {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: apps/v1
+      time: '2025-03-05T19:50:37Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:deployment.kubernetes.io/revision': {}
+        'f:status':
+          'f:conditions':
+            .: {}
+            'k:{"type":"Available"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Progressing"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+          'f:observedGeneration': {}
+      subresource: status
+  namespace: technical-assistant
+  labels:
+    app: technical-assistant-git
+    app.kubernetes.io/component: technical-assistant-git
+    app.kubernetes.io/instance: technical-assistant-git
+    app.kubernetes.io/name: technical-assistant-git
+    app.kubernetes.io/part-of: chatbot-frontend-app
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 20-ubi8
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: technical-assistant-git
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: technical-assistant-git
+        deployment: technical-assistant-git
+    spec:
+      containers:
+        - name: technical-assistant-git
+          image: 'image-registry.openshift-image-registry.svc:5000/technical-assistant/technical-assistant-git:latest'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: env
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+status:
+  observedGeneration: 3
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2025-01-22T13:36:59Z'
+      lastTransitionTime: '2025-01-22T13:36:59Z'
+      reason: MinimumReplicasAvailable
+      message: Deployment has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2025-01-22T13:36:59Z'
+      lastTransitionTime: '2025-01-22T13:36:27Z'
+      reason: NewReplicaSetAvailable
+      message: ReplicaSet "technical-assistant-git-6fcdccfb68" has successfully progressed.
