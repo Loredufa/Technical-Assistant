@@ -1,0 +1,87 @@
+﻿kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: technical-assistant-git
+  namespace: technical-assistant
+  uid: bad6e3d7-8108-4bd0-8b21-30f691318b3e
+  resourceVersion: '38352497'
+  creationTimestamp: '2025-01-22T13:36:28Z'
+  labels:
+    app: technical-assistant-git
+    app.kubernetes.io/component: technical-assistant-git
+    app.kubernetes.io/instance: technical-assistant-git
+    app.kubernetes.io/name: technical-assistant-git
+    app.kubernetes.io/part-of: chatbot-frontend-app
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 20-ubi8
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/Loredufa/Technical-Assistant.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+    openshift.io/host.generated: 'true'
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: route.openshift.io/v1
+      time: '2025-01-22T13:36:28Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:app.openshift.io/vcs-ref': {}
+            'f:app.openshift.io/vcs-uri': {}
+            'f:openshift.io/generated-by': {}
+          'f:labels':
+            .: {}
+            'f:app': {}
+            'f:app.kubernetes.io/component': {}
+            'f:app.kubernetes.io/instance': {}
+            'f:app.kubernetes.io/name': {}
+            'f:app.kubernetes.io/part-of': {}
+            'f:app.openshift.io/runtime': {}
+            'f:app.openshift.io/runtime-version': {}
+        'f:spec':
+          'f:port':
+            .: {}
+            'f:targetPort': {}
+          'f:tls':
+            .: {}
+            'f:insecureEdgeTerminationPolicy': {}
+            'f:termination': {}
+          'f:to':
+            'f:kind': {}
+            'f:name': {}
+            'f:weight': {}
+          'f:wildcardPolicy': {}
+    - manager: openshift-router
+      operation: Update
+      apiVersion: route.openshift.io/v1
+      time: '2025-01-22T13:36:28Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:ingress': {}
+      subresource: status
+spec:
+  host: technical-assistant-git-technical-assistant.apps.focus-ocp-sno.datco.net
+  to:
+    kind: Service
+    name: technical-assistant-git
+    weight: 100
+  port:
+    targetPort: 5000-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+status:
+  ingress:
+    - host: technical-assistant-git-technical-assistant.apps.focus-ocp-sno.datco.net
+      routerName: default
+      conditions:
+        - type: Admitted
+          status: 'True'
+          lastTransitionTime: '2025-01-22T13:36:28Z'
+      wildcardPolicy: None
+      routerCanonicalHostname: router-default.apps.focus-ocp-sno.datco.net
