@@ -1,0 +1,75 @@
+﻿kind: Service
+apiVersion: v1
+metadata:
+  name: technical-assistant-git
+  namespace: technical-assistant
+  uid: 3ca0d0a3-f5c2-4b0b-b368-7ba4257cfee1
+  resourceVersion: '38352493'
+  creationTimestamp: '2025-01-22T13:36:28Z'
+  labels:
+    app: technical-assistant-git
+    app.kubernetes.io/component: technical-assistant-git
+    app.kubernetes.io/instance: technical-assistant-git
+    app.kubernetes.io/name: technical-assistant-git
+    app.kubernetes.io/part-of: chatbot-frontend-app
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 20-ubi8
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://github.com/Loredufa/Technical-Assistant.git'
+    openshift.io/generated-by: OpenShiftWebConsole
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: v1
+      time: '2025-01-22T13:36:28Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:app.openshift.io/vcs-ref': {}
+            'f:app.openshift.io/vcs-uri': {}
+            'f:openshift.io/generated-by': {}
+          'f:labels':
+            .: {}
+            'f:app': {}
+            'f:app.kubernetes.io/component': {}
+            'f:app.kubernetes.io/instance': {}
+            'f:app.kubernetes.io/name': {}
+            'f:app.kubernetes.io/part-of': {}
+            'f:app.openshift.io/runtime': {}
+            'f:app.openshift.io/runtime-version': {}
+        'f:spec':
+          'f:internalTrafficPolicy': {}
+          'f:ports':
+            .: {}
+            'k:{"port":5000,"protocol":"TCP"}':
+              .: {}
+              'f:name': {}
+              'f:port': {}
+              'f:protocol': {}
+              'f:targetPort': {}
+          'f:selector': {}
+          'f:sessionAffinity': {}
+          'f:type': {}
+spec:
+  clusterIP: 172.30.18.35
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 5000-tcp
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 172.30.18.35
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: technical-assistant-git
+    deployment: technical-assistant-git
+status:
+  loadBalancer: {}
