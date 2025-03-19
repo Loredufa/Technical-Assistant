@@ -6,7 +6,7 @@ const {secretKey} = require('../config/index')
 const verifyToken = (req, res, next) => { 
     const token = req.headers['x-access-token'];    
     if (!token) {
-        return res.status(401).json({ message: 'Token no proporcionado' });
+        return res.status(401).json({ message: 'Sin token' });
     }
     jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
