@@ -24,7 +24,7 @@ jobs:
       - name: Update Deployment Image
         run: |
           # Reemplaza la imagen en el deployment.yaml
-          sed -i "s|image:.*|image: image-registry.openshift-image-registry.svc:5000/technical-assistant/technical-assistant-git:latest|g" deployment.yaml
+          sed -i "s|image:.*|image: image-registry.openshift-image-registry.svc:5000/technical-assistant/technical-assistant-git:latest|g" deployment-technical-assistant-git.yaml
 
       # Paso 4: Hacer commit y push de los cambios
       - name: Commit and Push Changes
