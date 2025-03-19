@@ -29,6 +29,6 @@ jobs:
       # Paso 4: Hacer commit y push de los cambios
       - name: Commit and Push Changes
         run: |
-          git add deployment.yaml
+          git add deployment-technical-assistant-git.yaml
           git commit -m "Update image to latest version"
           git push origin main
