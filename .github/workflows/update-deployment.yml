@@ -15,21 +15,47 @@ jobs: #indica los jobs que se van a ejecutar
         uses: actions/checkout@v3 #uses:indica que este paso usa una acción de GitHub predefinida, actions/checkout: descarga el código fuente del repositorio,  @v3:indica que está usando la versión 3 de la acción.
         #Esto es lo mismo que hacer manualmente: git clone https://github.com/ldufaur/Technical-Assistant.git dentro de la imagen
 
-      # Paso 2: Configurar Git (para hacer commit y push)
+      # Paso 2: Configurar la CLI de OpenShift (oc)
+      - name: Install OpenShift CLI
+        run: |
+          curl -sSL https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz | tar -xz
+          sudo mv oc /usr/local/bin/
+      
+      # Paso 3: Autenticarse en OpenShift
+      - name: Login to OpenShift
+        run: |
+          oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }}
+      
+      # Paso 4: Disparar un nuevo build y obtener el nombre de la nueva imagen
+      - name: Trigger OpenShift Build and Get Image Name
+        id: build
+        run: |
+          # Disparar el build
+          oc start-build technical-assistant-git --follow
+
+          # Obtener el nombre de la nueva imagen
+          IMAGE_NAME=$(oc get istag technical-assistant-git:latest -o jsonpath='{.image.dockerImageReference}')
+          echo "New image: $IMAGE_NAME"
+
+          # Guardar el nombre de la imagen en una variable de salida
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
+      
+      # Paso 5: Actualizar el deployment.yaml con la nueva imagen
+      - name: Update Deployment Image
+        run: |
+          # Reemplazar la imagen en el deployment.yaml
+          sed -i "s|image:.*|image: ${{ steps.build.outputs.IMAGE_NAME }}|g" deployment-technical-assistant-git.yaml    
+      
+      # Paso 6: Configurar Git (para hacer commit y push)
       - name: Configure Git
         run: | # Configura el usuario y el correo generico para actions en Git dentro del runner, es necesario cuando quieres hacer commits o push de cambios en un repositorio dentro del pipeline.
           git config --global user.name "GitHub Actions" 
           git config --global user.email "actions@github.com"  
 
-      # Paso 3: Actualizar la imagen en el deployment, cambiando la referencia de la imagen para que use el último commit como tag.
-      - name: Update Deployment Image
-        run: |
-          IMAGE_TAG=$(git rev-parse --short HEAD)
-          sed -i "s|image:.*|image: image-registry.openshift-image-registry.svc:5000/technical-assistant/technical-assistant-git:$IMAGE_TAG|g" deployment-technical-assistant-git.yaml
 
-      # Paso 4: Hacer commit y push de los cambios
+      # Paso 7: Hacer commit y push de los cambios
       - name: Commit and Push Changes
         run: |
           git add deployment-technical-assistant-git.yaml
-          git commit -m "Update image to latest version"
+          git commit -m "Update image to ${{ steps.build.outputs.IMAGE_NAME }}"
           git push origin main
