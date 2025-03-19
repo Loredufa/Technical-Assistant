@@ -130,7 +130,7 @@ spec:
     spec:
       containers:
         - name: technical-assistant-git
-          image: image-registry.openshift-image-registry.svc:5000/technical-assistant/technical-assistant-git:5080c9f
+          image: image-registry.openshift-image-registry.svc:5000/technical-assistant/technical-assistant-git:3ac7f61
           ports:
             - containerPort: 8080
               protocol: TCP
